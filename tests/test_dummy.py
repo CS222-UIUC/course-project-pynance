@@ -1,12 +1,12 @@
 """tests_dummy"""
 def test_default1():
     """tests_dummy_1"""
-    x = 2
-    y = 3
-    assert x + 1 == y
+    x_1 = 2
+    y_1 = 3
+    assert x_1 + 1 == y_1
 
 def test_default2():
     """test_dummy_2"""
-    x = 3
-    y = 4
-    assert x + 1 == y
+    x_2 = 3
+    y_2 = 4
+    assert x_2 + 1 == y_2
