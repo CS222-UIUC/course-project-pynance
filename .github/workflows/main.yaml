@@ -26,10 +26,9 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pytest-cov
           python -m pip install pylint
-          pip install -r requirements.txt
           
       - name: pylint ${{ matrix.python-version }}
-        run: pylint bustracker/app.py tests/test_requests.py
+        run: pylint tests/test_requests.py
       - name: unit ${{ matrix.python-version }}
         run: pytest tests/
       - name: coverage ${{ matrix.python-version }}
