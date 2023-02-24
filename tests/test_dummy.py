@@ -10,3 +10,9 @@ def test_default2():
     x_2 = 3
     y_2 = 4
     assert x_2 + 1 == y_2
+
+def test_default3():
+    """test_dummy_3"""
+    x_3 = 4
+    y_3 = 5
+    assert x_3 + 1 == y_3
