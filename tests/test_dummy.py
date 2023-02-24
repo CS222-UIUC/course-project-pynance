@@ -1,7 +1,8 @@
-"""test_1"""
+"""tests_dummy"""
 def test_default1():
-    assert True
+    """tests_dummy_1"""
+    assert 1 == 1
 
-"""test_2"""
 def test_default2():
-    assert True
+    """test_dummy_2"""
+    assert 2 == 2
