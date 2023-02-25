@@ -22,3 +22,9 @@ def test_default4():
     x_4 = 6
     y_4 = 7
     assert x_4 + 1 == y_4
+
+def test_default5():
+    """test_dummy_5"""
+    x_4 = 8
+    y_4 = 9
+    assert x_4 + 1 == y_4
