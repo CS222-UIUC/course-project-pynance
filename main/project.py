@@ -36,5 +36,22 @@ def exists(stock_name):
 
 def main():
     """Main Function"""
+    
+    print("Which stock would you like data on?")
+
+    stock_name = str(input("Please enter it's symbol:"))
+
+    """Making ticker and checking whether it exists or not"""
+
+    ticker = yf.Ticker(stock_name)
+
+    try:
+        ticker.history
+    except:
+        print("We can't get any data on {}, please try again ".format(stock_name))
+        return 0
+    
+    data = get_company_data(stock_name)
+    print(data)
 
     return 0
