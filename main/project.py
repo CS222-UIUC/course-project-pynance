@@ -19,8 +19,8 @@ def get_company_data(stock_name):
         stock_data.to_csv(filepath)
 
         #Write descriptions
-        filepath = Path('data/' + str(stock_name) + '.txt')
-        filepath.parent.mkdir(parents=True, exist_ok=True)
+        # filepath = Path('data/' + str(stock_name) + '.txt')
+        # filepath.parent.mkdir(parents=True, exist_ok=True)
         #stock_data.to_csv(filepath)  FIGURE OUT HOW TO WRITE STOCK_DATA.INFO TO A TXT FILE
         return stock_data
 
@@ -28,7 +28,7 @@ def get_company_data(stock_name):
 def exists(stock_name):
     """Checks if the stock data for a particular company exists"""
     stocks = os.listdir('data/')
-    print(stocks)
+    #print(stocks)
     for i in stocks:
         if i == str(stock_name) + ".csv":
             return True
@@ -41,16 +41,15 @@ def main():
 
     stock_name = str(input("Please enter it's symbol:"))
 
-    """Making ticker and checking whether it exists or not"""
+    #Making ticker and checking whether it exists or not
 
     ticker = yf.Ticker(stock_name)
 
     try:
         ticker.history
     except:
-        print("We can't get any data on {}, please try again ".format(stock_name))
-        return 0
-    
+        print("We can't get any data on " + str(stock_name) + " please try again ")
+        return 0        
     data = get_company_data(stock_name)
     print(data)
 
