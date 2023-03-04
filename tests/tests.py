@@ -21,10 +21,8 @@ def test_exists():
     for i in stock_names:
         result = exists(i)
         actual_results.append(result)
-    for i,j in enumerate(expected_results):
+    for i in range(6):
         assert actual_results[i] == expected_results[i]
-        j += '1'
-        j -= '1'
     print("test_exists(): ALL ASSERTIONS PASSED")
 
 test_exists()
