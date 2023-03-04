@@ -33,7 +33,7 @@ jobs:
         run: pytest tests/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
-          pytest --cov=./ --cov-report= tests/
+          pytest --cov=./ --cov-report= tests/tests.py
           coverage report --fail-under=70
       
         
