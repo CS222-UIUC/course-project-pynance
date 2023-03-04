@@ -30,7 +30,7 @@ jobs:
       - name: pylint ${{ matrix.python-version }}
         run: pylint tests/tests.py
       - name: unit ${{ matrix.python-version }}
-        run: pytest tests/
+        run: pytest tests/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
           pytest --cov=./ --cov-report= tests/
