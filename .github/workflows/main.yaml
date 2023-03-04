@@ -28,7 +28,7 @@ jobs:
           python -m pip install pylint
           
       - name: pylint ${{ matrix.python-version }}
-        run: pylint tests/test_dummy.py
+        run: pylint tests/test.py
       - name: unit ${{ matrix.python-version }}
         run: pytest tests/
       - name: coverage ${{ matrix.python-version }}
