@@ -88,10 +88,15 @@ def get_company_summary(stock_name):
 
 def main():
     """Main Function"""
+    cont= True
 
-    print("------Which stock would you like data on?------")
-    stock_name = str(input("Please enter it's symbol: "))
-    data = get_company_summary(stock_name)
-    print(data)
+    while cont:
+        print("------Which stock would you like data on?------")
+        stock_name = str(input("Please enter it's symbol: "))
+        data = get_company_summary(stock_name)
+        print(data)
+        keyput = str(input("Would You like data on another stock?[press y if yes, otherwise no]"))
+        if (keyput != 'y'):
+            break
 
 main()
