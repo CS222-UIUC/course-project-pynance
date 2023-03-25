@@ -6,13 +6,13 @@ To create a system that predicts stock prices, the following machine learning te
 
     Based on previous data, linear regression is a fundamental machine learning technique that can be used to predict future
     stock price values. This method establishes a linear relationship between the stock price and its characteristics, including
-    volume, price-to-earnings ratio, etc. We can train a Multiple Linear Regression model and alter or drop paramteres to obtain
+    volume, price-to-earnings ratio, etc. We can train a Multiple Linear Regression model and alter or drop parameters to obtain
     a linear relationship. Typically, the more data we have from the past, the more accurately our model predicts prices.
 
 2. Support Vector Regression Machine
     
     It is based on a mathematical concept of hyperplanes. Instead of developing a model using response-predictor relationship,
-    it tries to create a hyperplane between predicted and actual values. However, it involved a lot of steps begining from data
+    it tries to create a hyperplane between predicted and actual values. However, it involved a lot of steps beginning from data
     processing (normalization, etc.). Then, we train the data on a training dataset to get a hyperplane. Finally, we test the
     model using a validation dataset and compute the accuracy using the Mean Squared Error.
 
@@ -20,7 +20,7 @@ To create a system that predicts stock prices, the following machine learning te
 
     Various kinds of neural networks can be used to predict stock prices. We can focus on Long Short-Term Memory which is a
     recurring neural network. It extracts the relationship between actual and predicted prices and trains on a testing dataset
-    while exploiting temporal dependencies and minimizes the error. However, it is a very advanced technique and unlikely to be
+    while exploiting temporal dependencies and minimizing the error. However, it is a very advanced technique and unlikely to be
     used for this project.
 
 4. Random Forest
