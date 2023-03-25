@@ -1,9 +1,13 @@
 """Main Project File"""
+# we should probably write a package setup script instead of rerunning imports each and every time
 import os
 from pathlib import Path
 import yfinance as yf
 import pandas as pd
+import mplfinance as mpf
+import matplotlib.pyplot as plt
 import requests
+import datetime
 # from bs4 import BeautifulSoup
 
 def exists_data(stock_name):
@@ -35,7 +39,7 @@ def get_company_data(stock_name):
 def exists_info(stock_name):
     """Checks if the stock info for a particular company exists"""
 
-    stocks = os.listdir('info/')
+    stocks = os.listdir('../info/')
     for i in stocks:
         if i == str(stock_name) + ".txt":
             return True
@@ -47,7 +51,7 @@ def get_company_summary(stock_name):
 
     if exists_info(stock_name):
         #read info
-        file = open('info/' + str(stock_name) + '.txt', "r", encoding="utf-8")
+        file = open('../info/' + str(stock_name) + '.txt', "r", encoding="utf-8")
         stock_information = file.read()
         file.close()
         return stock_information
@@ -80,11 +84,26 @@ def get_company_summary(stock_name):
         # stock_information = stock.info
 
         #write data
-        file = open('info/' + str(stock_name) + '.txt', "w", encoding="utf-8")
+        file = open('../info/' + str(stock_name) + '.txt', "w", encoding="utf-8")
         file.write(stock_information)
         file.close()
         return stock_information
 
+### Visualization Component ###
+
+def plot_stocks_df(stocks, period, interval):
+    for stock in stocks:
+        plt.figure()
+        temp = yf.Ticker(stock)
+        hist = yf.download(tickers = stock, period = period, interval = interval)
+        mpf.plot(hist, 
+                    type = 'candle',
+                    volume = True,
+                    mav = (20,5),
+                    title= stock + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    tight_layout = True,
+                    figratio= (10,5))
+        globals()[f"plot_{stock}_{interval}"] = plt.gcf()
 
 def main():
     """Main Function"""
@@ -93,5 +112,18 @@ def main():
     stock_name = str(input("Please enter it's symbol: "))
     data = get_company_summary(stock_name)
     print(data)
+
+    ### Visualization Component ###
+
+    # period = '1d'
+    period = str(input('Enter a period (1d, 1m, 1y): '))
+    # interval = '5m'
+    interval = str(input('Enter an interval (1d, 1m, 1y): '))
+
+    # stocks = ['MSFT', 'BTC-USD']
+    stocks = input('Enter stock name abbreviation separated by commas (AAPL, GOOG, AMZN): ')
+    stocks = stocks.replace(' ', '').split(',')
+
+    plot_stocks_df(stocks, period, interval)
 
 main()
