@@ -1,0 +1,40 @@
+                                    Machine Learning Techniques for Stock Prediction
+
+To create a system that predicts stock prices, the following machine learning techniques can be implemented in Python: 
+
+1. Linear Regression
+
+    Based on previous data, linear regression is a fundamental machine learning technique that can be used to predict future
+    stock price values. This method establishes a linear relationship between the stock price and its characteristics, including
+    volume, price-to-earnings ratio, etc. We can train a Multiple Linear Regression model and alter or drop paramteres to obtain
+    a linear relationship. Typically, the more data we have from the past, the more accurately our model predicts prices.
+
+2. Support Vector Regression Machine
+    
+    It is based on a mathematical concept of hyperplanes. Instead of developing a model using response-predictor relationship,
+    it tries to create a hyperplane between predicted and actual values. However, it involved a lot of steps begining from data
+    processing (normalization, etc.). Then, we train the data on a training dataset to get a hyperplane. Finally, we test the
+    model using a validation dataset and compute the accuracy using the Mean Squared Error.
+
+3. Neural Networks
+
+    Various kinds of neural networks can be used to predict stock prices. We can focus on Long Short-Term Memory which is a
+    recurring neural network. It extracts the relationship between actual and predicted prices and trains on a testing dataset
+    while exploiting temporal dependencies and minimizes the error. However, it is a very advanced technique and unlikely to be
+    used for this project.
+
+4. Random Forest
+
+    Random Forest is a Statistical technique which uses a forest of decision trees (a large number of decision trees) and 
+    combines their prediction to yield a more accurate prediction. It can be very useful when there are a large number of
+    features. Each tree trains on a subset of these input features, and combining the result of all trees helps avoid overfitting
+    and improves the accuracy of the predictions.
+
+
+Conclusion
+
+    Considering that we have less experience with Machine Learning techniques and our data does not have a large number of
+    features, we should probably not pursue Neural Networks and Random Forest. Between Multiple Linear Regression (MLR) and
+    Support Vector Regression, Support Vector Regression has had more promising results in the past. However, MLR is simpler
+    learn and implement and it would be wise to first implement MLR to gain insight. Based on the accuracy of results from MLR,
+    we can shift or not to Support Vector Regression. 
