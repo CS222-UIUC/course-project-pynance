@@ -1,0 +1,13 @@
+country: US
+currency: USD
+estimateCurrency: USD
+exchange: NASDAQ NMS - GLOBAL MARKET
+finnhubIndustry: Media
+ipo: 2004-08-19
+logo: https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/GOOG.svg
+marketCapitalization: 1162690.404553443
+name: Alphabet Inc
+phone: 16502530000.0
+shareOutstanding: 12807
+ticker: GOOGL
+weburl: https://abc.xyz/

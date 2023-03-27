@@ -1,0 +1,13 @@
+country: DE
+currency: EUR
+estimateCurrency: EUR
+exchange: XETRA
+finnhubIndustry: Automobiles
+ipo: 1961-08-15
+logo: https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/942958692446.svg
+marketCapitalization: 80950.162604
+name: Volkswagen AG
+phone: 49536190.0
+shareOutstanding: 501.295
+ticker: VOW3.DE
+weburl: https://www.volkswagenag.com/
