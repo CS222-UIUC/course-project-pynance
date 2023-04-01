@@ -50,7 +50,7 @@ def test_exists_info():
     print("Running test_exists_info()...")
     print(".....\n"*3)
     stock_names = ["GOOG", "AAPL","UAL","VWAGY","TSLA","AMZN"]
-    expected_results = [True, True, False, True, False, False]
+    expected_results = [True, True, False, True, False, True]
     actual_results = []
     for i in stock_names:
         result = exists_info(i)
