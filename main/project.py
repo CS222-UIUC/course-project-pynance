@@ -1,33 +1,42 @@
 """Main Project File"""
+# we should probably write a package setup script instead of rerunning imports each and every time
 import os
 from pathlib import Path
+import datetime
 import yfinance as yf
 import pandas as pd
+import mplfinance as mpf
+import matplotlib.pyplot as plt
 import requests
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 # from bs4 import BeautifulSoup
 
-def exists_data(stock_name):
+def exists_data(stock_name, custom_period, custom_interval):
     """Checks if the stock data for a particular company exists"""
 
     stocks = os.listdir('data/')
     #print(stocks)
     for i in stocks:
-        if i == str(stock_name) + ".csv":
+        if i == str(stock_name) + '_' + custom_period + '_' + custom_interval + ".csv":
             return True
     return False
 
-def get_company_data(stock_name):
+def get_company_data(stock_name, custom_period, custom_interval):
     """Fetches Company Stock Data and Stores it as CSV file"""
 
-    if exists_data(stock_name):
+    if exists_data(stock_name, custom_period, custom_interval):
         #read File
-        stock_data = pd.read_csv('data/' + str(stock_name) + '.csv')
+        stock_data = pd.read_csv('data/' + str(stock_name) + '_' +
+                                custom_period + '_' + custom_interval + '.csv')
         return stock_data
     else:
-        stock_data = yf.download(tickers=stock_name, period='1d', interval='1m')
+        stock_data = yf.download(tickers=stock_name, period=custom_period, interval=custom_interval)
         #print(stock_data)
         #Write it into a file
-        filepath = Path('data/' + str(stock_name) + '.csv')
+        filepath = Path('data/' + str(stock_name) + '_' +
+                        custom_period + '_' + custom_interval + '.csv')
         filepath.parent.mkdir(parents=True, exist_ok=True)
         stock_data.to_csv(filepath)
         return stock_data
@@ -85,13 +94,94 @@ def get_company_summary(stock_name):
         file.close()
         return stock_information
 
+### Visualization Component ###
+
+def plot_stocks_df(stocks, period, interval):
+    '''Visualization Component'''
+    for stock in stocks:
+        plt.figure()
+        # temp = yf.Ticker(stock)
+        hist = yf.download(tickers = stock, period = period, interval = interval)
+        mpf.plot(hist,
+                    type = 'candle',
+                    volume = True,
+                    mav = (20,5),
+                    title= stock + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    tight_layout = True,
+                    figratio= (10,5))
+        globals()[f"plot_{stock}_{interval}"] = plt.gcf()
+
+# Run Linear Regression
+def run_linear_regression(stock_data):
+    """Builds and tests linear regression model"""
+    x_1 = stock_data[['Open', 'High','Low', 'Volume']]
+    y_1 = stock_data['Close']
+    train_x, test_x, train_y, test_y = train_test_split(x_1, y_1, test_size=0.15 ,
+                                                        shuffle=False,random_state = 0)
+    print(train_x.shape)
+    print(test_x.shape)
+    print(train_y.shape)
+    print(test_y.shape)
+    regression = LinearRegression()
+    regression.fit(train_x, train_y)
+    print("regression coefficient",regression.coef_)
+    print("regression intercept",regression.intercept_)
+    # the coefficient of determination R²
+    regression_confidence = regression.score(test_x, test_y)
+    print("linear regression confidence: ", regression_confidence)
+
+    predicted=regression.predict(test_x)
+    dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
+    print(dfr.head(10))
+
+    print('Mean Absolute Error (MAE):', metrics.mean_absolute_error(test_y, predicted))
+
+    x_2 = dfr.Actual_Price.mean()
+    y_2 = dfr.Predicted_Price.mean()
+    accuracy_1 = x_2/y_2*100
+    print("The accuracy of the model is " , accuracy_1)
+
+    # Visualization
+
+    plt.scatter(dfr.Actual_Price, dfr.Predicted_Price,  color='Darkblue')
+    plt.xlabel("Actual Price")
+    plt.ylabel("Predicted Price")
+    plt.show()
+
+    plt.plot(dfr.Actual_Price, color='black')
+    plt.plot(dfr.Predicted_Price, color='lightblue')
+    plt.title("Nio prediction chart")
+    plt.show()
 
 def main():
     """Main Function"""
 
-    print("------Which stock would you like data on?------")
-    stock_name = str(input("Please enter it's symbol: "))
-    data = get_company_summary(stock_name)
-    print(data)
+    while True:
+        print("------Which stock would you like data on?------")
+        stock_name = str(input("Please enter it's symbol: "))
+        period = str(input("""Please enter the period over which you want the data
+                            (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        interval = str(input("""Please enter the interval between which you want the data
+        (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        # data = get_company_summary(stock_name)
+        # print(data)
+        stock_data = get_company_data(stock_name, period, interval)
+        run_linear_regression(stock_data)
+        break
+        # ### Visualization Component ###
+
+        # # period = '1d'
+        # period = str(input('Enter a period (1d, 1m, 1y): '))
+        # # interval = '5m'
+        # interval = str(input('Enter an interval (1d, 1m, 1y): '))
+
+        # # stocks = ['MSFT', 'BTC-USD']
+        # stocks = input('Enter stock name abbreviation separated by commas (AAPL, GOOG, AMZN): ')
+        # stocks = stocks.replace(' ', '').split(',')
+
+        # plot_stocks_df(stocks, period, interval)
+        # keyput = str(input("Would You like data on another stock?[press y if yes, otherwise no]"))
+        # if keyput != 'y':
+        #     break
 
 main()
