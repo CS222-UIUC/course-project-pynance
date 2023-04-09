@@ -1,0 +1,33 @@
+                    Ways to improve accuracy of Linear Regression Model
+
+1. Increase training dataset
+    Acquiring a larger dataset is consistently beneficial as it enables the data to speak for itself, rather than
+    depending solely on assumptions and unreliable correlations. The availability of abundant data leads to the development
+    of superior and more precise machine learning models.
+
+2. Remove missing/null values and outliers
+    The unwelcome occurrence of missing or outlier values in the training data can significantly diminish the accuracy of
+    a trained model and result in a biased outcome. This is due to the improper analysis of their behavior and relationship
+    with other variables. Therefore, it is crucial to effectively address and handle missing and outlier values to ensure
+    accurate predictions in machine learning models.
+
+3. Feature Engineering
+    Feature engineering is a critical step in machine learning that involves manipulating the input features to improve the
+    accuracy of a linear model. Techniques such as feature selection, where irrelevant or redundant features are removed, can
+    help in simplifying the model and reducing noise. Feature transformation, such as scaling or normalization, can ensure
+    that features are on similar scales, preventing some features from dominating others during model training. Feature
+    encoding, such as one-hot encoding or label encoding, can convert categorical variables into numerical representations
+    that can be easily understood by the linear model.
+
+4. Feature Selection
+    Feature selection is a key technique in machine learning that involves carefully choosing a subset of relevant features
+    from the original set of input features to improve the accuracy of a linear model. This process helps in simplifying the
+    model, reducing noise, and mitigating the risk of overfitting.
+
+5. Algorithmic Tuning
+    Algorithmic tuning, also known as hyperparameter tuning, is the process of optimizing the hyperparameters of a machine
+    learning algorithm to achieve the best possible performance. Hyperparameters are parameters that cannot be learned from
+    the training data and need to be set by the user, such as learning rate, regularization strength, or number of hidden
+    layers in a neural network. Tuning involves systematically adjusting these hyperparameters and training the model multiple
+    times with different values to find the optimal combination that yields the highest accuracy or other desired performance
+    metrics.
