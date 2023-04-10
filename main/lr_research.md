@@ -1,8 +1,8 @@
 ## Setting the Context and the Linear Regression Model
 
-Given a dataset $\{x_1,x_2,x_3,x_4\}_{i=1}^{n}$ of $n$ data samples and a multiple variable linear regression model, we make the assumption that the relationship between the dependent variable $y$ and the vector of regressors $\bold{x}$ is linear and thus can be written as a linear combination.
+Given a dataset $\{x_1,x_2,x_3,x_4\}_{i=1}^{n}$ of $n$ data samples and a multiple variable linear regression model, we make the assumption that the relationship between the dependent variable $y$ and the vector of regressors $x$ is linear and thus can be written as a linear combination.
 
-$y_i=\beta_0+\beta_1 x_1+\beta_2x_2+\beta_3 x_3+\beta_4 x_4+\epsilon_i=\bold{x}_i^T\bold{\beta}+\epsilon_i$ ,
+$y_i=\beta_0+\beta_1 x_1+\beta_2x_2+\beta_3 x_3+\beta_4 x_4+\epsilon_i=X_i^T\beta+\epsilon_i$ ,
 
 where $\mathcal{\beta}$ denotes the $5$-dimensional *****************parameter vector*****************, precisely where $\beta_0$ is the intercept term, and $\epsilon_i$ denotes the error variable — “an unobserved random variable that adds ******noise****** to the linear relationship between the dependent variable and regressors.” We will talk more about this error variable later on in our analysis so as to reduce the margin of error in our model and prediction.
 
@@ -118,8 +118,8 @@ Given that the p-value is less than a chosen significance level, say 0.05/5%, we
 
 ### ****************************************************************Lack of perfect multicollinearity (in the independent variables)****************************************************************
 
-For standard least squares estimation methods, we must assume that the design matrix $\bold{X}$ must have full column rank $p$ where $p$ is the amount of parameters, otherwise perfect multicollinearity exists in the independent variables, meaning a linear relationship exists between two or more independent variables. Near violators of this assumption, where independent variables are highly but not perfectly correlated, can reduce the precision of parameter estimates.
+For standard least squares estimation methods, we must assume that the design matrix $X$ must have full column rank $p$ where $p$ is the amount of parameters, otherwise perfect multicollinearity exists in the independent variables, meaning a linear relationship exists between two or more independent variables. Near violators of this assumption, where independent variables are highly but not perfectly correlated, can reduce the precision of parameter estimates.
 
-This is understandably a problem for a linear regression model because it means that one independent variable is a transformation, alteration, or duplication of another because both or more depend on one another, which leads to highly unstable and sensitive predictions when the data is slightly altered. This makes sense because it could give double or more the weight to what is technically the same independent variable amidst the rest of the other independent variables. Redundantly, we also refer to our connotation of ***********independent*********** variables, such that the columns in the matrix $\bold{X}$ are linearly independent, and thus why we test for full column rank.
+This is understandably a problem for a linear regression model because it means that one independent variable is a transformation, alteration, or duplication of another because both or more depend on one another, which leads to highly unstable and sensitive predictions when the data is slightly altered. This makes sense because it could give double or more the weight to what is technically the same independent variable amidst the rest of the other independent variables. Redundantly, we also refer to our connotation of ***********independent*********** variables, such that the columns in the matrix $X$ are linearly independent, and thus why we test for full column rank.
 
-To check for multicollinearity, it suffices with calculating that the rank of design matrix $\bold{X}$ is $p$ so as to check if any independent variable column is a linear combination of another and thus redundant and worth eliminating so as to prevent the previously mentioned downsides.
+To check for multicollinearity, it suffices with calculating that the rank of design matrix $X$ is $p$ so as to check if any independent variable column is a linear combination of another and thus redundant and worth eliminating so as to prevent the previously mentioned downsides.
