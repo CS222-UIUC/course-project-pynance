@@ -39,7 +39,7 @@ def test_exists_data():
     expected_results = [True, False, True, False, True, False]
     actual_results = []
     for i in stock_names:
-        if (i == "MSFT"):
+        if i == "MSFT":
             actual_results.append(exists_data(i, "10y", "1d"))
             continue
         result = exists_data(i, "5y", "1d")
