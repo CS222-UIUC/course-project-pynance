@@ -120,19 +120,24 @@ def run_linear_regression(stock_data):
     y_1 = stock_data['Close']
     train_x, test_x, train_y, test_y = train_test_split(x_1, y_1, test_size=0.15 ,
                                                         shuffle=False,random_state = 0)
-    print(train_x.shape)
-    print(test_x.shape)
-    print(train_y.shape)
-    print(test_y.shape)
+    # print(train_x.shape)
+    # print(test_x.shape)
+    # print(train_y.shape)
+    # print(test_y.shape)
     regression = LinearRegression()
     regression.fit(train_x, train_y)
-    print("regression coefficient",regression.coef_)
-    print("regression intercept",regression.intercept_)
+    return (regression, test_x, test_y)
+
+
+def get_stats(model, test_x, test_y):
+    """Provides Statistics of the Linear Model"""
+    print("regression coefficient",model.coef_)
+    print("regression intercept",model.intercept_)
     # the coefficient of determination R²
-    regression_confidence = regression.score(test_x, test_y)
+    regression_confidence = model.score(test_x, test_y)
     print("linear regression confidence: ", regression_confidence)
 
-    predicted=regression.predict(test_x)
+    predicted=model.predict(test_x)
     dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
     print(dfr.head(10))
 
@@ -145,6 +150,10 @@ def run_linear_regression(stock_data):
 
     # Visualization
 
+def get_plots(model, test_x, test_y):
+    """Visualizes the Model"""
+    predicted=model.predict(test_x)
+    dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
     plt.scatter(dfr.Actual_Price, dfr.Predicted_Price,  color='Darkblue')
     plt.xlabel("Actual Price")
     plt.ylabel("Predicted Price")
@@ -270,8 +279,11 @@ def lstm_helper_show_plot(plot_data, delta, title):
 
 def main():
     """Main Function"""
-
-    while True:
+    print("How many stocks do you want data on?")
+    print("Enter a non-negative integer here: ")
+    n_1 = int(input())
+    i_1 = 0
+    while i_1 < n_1:
         print("------Which stock would you like data on?------")
         stock_name = str(input("Please enter it's symbol: "))
         period = str(input("""Please enter the period over which you want the data
@@ -281,8 +293,26 @@ def main():
         # data = get_company_summary(stock_name)
         # print(data)
         stock_data = get_company_data(stock_name, period, interval)
-        run_linear_regression(stock_data)
-        break
+        model, test_x, test_y = run_linear_regression(stock_data)
+        want_stats = input("Would you like the statistics of the model? (y/n)")
+        if want_stats == 'y':
+            get_stats(model, test_x, test_y)
+        want_plots = input("Would you like the plots of the data? (y/n)")
+        if want_plots == 'y':
+            get_plots(model, test_x, test_y)
+        predict_open = int(input("Enter the opening price of the stock: "))
+        predict_high = int(input("Enter the high of the stock: "))
+        predict_low = int(input("Enter the low of the stock: "))
+        predict_vol = int(input("Enter the volume the stock: "))
+        predict_dict = {"Open": [predict_open], "High": [predict_high],
+                        "Low": [predict_low], "Volume": [predict_vol]}
+        predict_df = pd.DataFrame(predict_dict)
+        print("The predicted closing price of", stock_name, "is:",
+            model.predict(predict_df)[0])
+        i_1 += 1
+        print("*************")
+        print("Thank you for using this app")
+        print("*************")
         # ### Visualization Component ###
 
         # # period = '1d'
