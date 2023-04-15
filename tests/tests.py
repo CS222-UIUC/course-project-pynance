@@ -35,10 +35,13 @@ def test_exists_data():
     """Tests the exists_data function"""
     print("Running test_exists()...")
     print(".....\n"*3)
-    stock_names = ["GOOG", "AAPL","UAL","VWAGY","TSLA","AMZN"]
-    expected_results = [True, False, False, False, False, False]
+    stock_names = ["GOOG", "AAPL","MSFT","VWAGY","TSLA","AMZN"]
+    expected_results = [True, False, True, False, True, False]
     actual_results = []
     for i in stock_names:
+        if (i == "MSFT"):
+            actual_results.append(exists_data(i, "10y", "1d"))
+            continue
         result = exists_data(i, "5y", "1d")
         actual_results.append(result)
     for i in range(6):
