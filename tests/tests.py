@@ -61,3 +61,6 @@ def test_exists_info():
 
 test_exists_data()
 test_exists_info()
+
+def linear_regression():
+    

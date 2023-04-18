@@ -54,7 +54,7 @@ def exists_info(stock_name):
 
 def get_company_summary(stock_name):
     """Fetches Company Summary and Stores it as txt file
-    Returns the company summary string"""
+    Returns the company summary string"""   
 
     if exists_info(stock_name):
         #read info
