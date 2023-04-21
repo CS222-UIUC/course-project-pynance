@@ -1,8 +1,6 @@
 """Test Cases for all functions"""
 import math
 import project
-import pandas as pd
-import matplotlib.pyplot as plt
 #   TESTS
 
 def test_exists_data():
@@ -49,12 +47,12 @@ def test_regression_plots():
         stock_data = project.get_company_data(i, "5y", "1d")
         model, test_x, test_y = project.run_linear_regression(stock_data)
         predicted=model.predict(test_x)
-        dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
-        plt.scatter(dfr.Actual_Price, dfr.Predicted_Price,  color='Darkblue')
-        plt.xlabel("Actual Price")
-        plt.ylabel("Predicted Price")
+        dfr=project.pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
+        project.plt.scatter(dfr.Actual_Price, dfr.Predicted_Price,  color='Darkblue')
+        project.plt.xlabel("Actual Price")
+        project.plt.ylabel("Predicted Price")
         #Check if the plot has been created / is not null
-        plot = plt.gcf()
+        plot = project.plt.gcf()
         assert plot
         #Check if the actual Closing Prices are close to the expected Close Prices
         #Basically the same as the model results,
