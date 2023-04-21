@@ -68,7 +68,7 @@ def get_company_summary(stock_name):
         url = f"https://finnhub.io/api/v1/stock/profile2?symbol={stock_name}&token={api_key}"
 
         #Used finnhub.io to retreive more information about the stock
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
 
         #Parse the data in json and store it
         data = response.json()

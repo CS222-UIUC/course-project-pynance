@@ -32,6 +32,7 @@ jobs:
           pip install mplfinance
           pip install sklearn
           pip install requests
+          pip install scikit-learn
 
       - name: pylint ${{ matrix.python-version }}
         run: pylint project/tests.py
