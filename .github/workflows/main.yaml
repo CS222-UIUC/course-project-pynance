@@ -34,14 +34,14 @@ jobs:
           pip install requests
 
       - name: pylint ${{ matrix.python-version }}
-        run: pylint main/tests.py
+        run: pylint project/tests.py
       - name: pylint ${{ matrix.python-version }}
-        run: pylint main/project.py
+        run: pylint project/project.py
       - name: unit ${{ matrix.python-version }}
-        run: pytest main/tests.py
+        run: pytest project/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
-          pytest --cov=./ --cov-report= main/tests.py
+          pytest --cov=./ --cov-report= project/tests.py
           coverage report --fail-under=70
       
         
