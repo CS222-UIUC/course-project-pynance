@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import datetime
 import yfinance as yf
+import json
 import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
@@ -60,7 +61,10 @@ def get_company_summary(stock_name):
             return stock_information
     else:
         #FinnHub API key and website url
-        api_key = "cg5s5d1r01qoqcgjb6cgcg5s5d1r01qoqcgjb6d0"
+        api_key = ""
+        with open('config.json', 'r', encoding="utf-8") as api_file:
+            config = json.load(api_file)
+            api_key = config['api_key']
         url = f"https://finnhub.io/api/v1/stock/profile2?symbol={stock_name}&token={api_key}"
 
         #Used finnhub.io to retreive more information about the stock
