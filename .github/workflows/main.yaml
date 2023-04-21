@@ -32,7 +32,6 @@ jobs:
           pip install mplfinance
           pip install sklearn
           pip install requests
-          pip install matplotlib.pyplot
 
       - name: pylint ${{ matrix.python-version }}
         run: pylint main/tests.py
