@@ -31,15 +31,14 @@ def get_company_data(stock_name, custom_period, custom_interval):
         stock_data = pd.read_csv('data/' + str(stock_name) + '_' +
                                 custom_period + '_' + custom_interval + '.csv')
         return stock_data
-    else:
-        stock_data = yf.download(tickers=stock_name, period=custom_period, interval=custom_interval)
-        #print(stock_data)
-        #Write it into a file
-        filepath = Path('data/' + str(stock_name) + '_' +
-                        custom_period + '_' + custom_interval + '.csv')
-        filepath.parent.mkdir(parents=True, exist_ok=True)
-        stock_data.to_csv(filepath)
-        return stock_data
+    stock_data = yf.download(tickers=stock_name, period=custom_period, interval=custom_interval)
+    #print(stock_data)
+    #Write it into a file
+    filepath = Path('data/' + str(stock_name) + '_' +
+                    custom_period + '_' + custom_interval + '.csv')
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    stock_data.to_csv(filepath)
+    return stock_data
 
 def exists_info(stock_name):
     """Checks if the stock info for a particular company exists"""
@@ -56,10 +55,9 @@ def get_company_summary(stock_name):
 
     if exists_info(stock_name):
         #read info
-        file = open('info/' + str(stock_name) + '.txt', "r", encoding="utf-8")
-        stock_information = file.read()
-        file.close()
-        return stock_information
+        with open('info/' + str(stock_name) + '.txt', "r", encoding="utf-8") as file:
+            stock_information = file.read()
+            return stock_information
     else:
         #FinnHub API key and website url
         api_key = "cg5s5d1r01qoqcgjb6cgcg5s5d1r01qoqcgjb6d0"
@@ -89,9 +87,8 @@ def get_company_summary(stock_name):
         # stock_information = stock.info
 
         #write data
-        file = open('info/' + str(stock_name) + '.txt', "w", encoding="utf-8")
-        file.write(stock_information)
-        file.close()
+        with open('info/' + str(stock_name) + '.txt', "w", encoding="utf-8") as file:
+            file.write(stock_information)
         return stock_information
 
 ### Visualization Component ###
@@ -143,8 +140,7 @@ def get_stats(model, test_x, test_y):
 
     x_2 = dfr.Actual_Price.mean()
     y_2 = dfr.Predicted_Price.mean()
-    accuracy_1 = x_2/y_2*100
-    print("The accuracy of the model is " , accuracy_1)
+    print("The accuracy of the model is " , x_2/y_2*100)
 
     # Visualization
 
@@ -167,8 +163,7 @@ def main():
     print("How many stocks do you want data on?")
     print("Enter a non-negative integer here: ")
     n_1 = int(input())
-    i_1 = 0
-    while i_1 < n_1:
+    while n_1 > 0:
         print("------Which stock would you like data on?------")
         stock_name = str(input("Please enter it's symbol: "))
         period = str(input("""Please enter the period over which you want the data
@@ -189,17 +184,15 @@ def main():
         predict_high = int(input("Enter the high of the stock: "))
         predict_low = int(input("Enter the low of the stock: "))
         predict_vol = int(input("Enter the volume the stock: "))
-        predict_dict = {"Open": [predict_open], "High": [predict_high],
-                        "Low": [predict_low], "Volume": [predict_vol]}
-        predict_df = pd.DataFrame(predict_dict)
+        predict_df = pd.DataFrame({"Open": [predict_open], "High": [predict_high],
+                        "Low": [predict_low], "Volume": [predict_vol]})
         print("The predicted closing price of", stock_name, "is:",
             model.predict(predict_df)[0])
-        i_1 += 1
         print("*************")
         print("Thank you for using this app")
         print("*************")
         # ### Visualization Component ###
-
+        n_1 -= 1
         # # period = '1d'
         # period = str(input('Enter a period (1d, 1m, 1y): '))
         # # interval = '5m'
@@ -214,4 +207,5 @@ def main():
         # if keyput != 'y':
         #     break
 
-main()
+if __name__ == "__main__":
+    main()

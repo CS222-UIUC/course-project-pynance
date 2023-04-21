@@ -28,12 +28,14 @@ jobs:
           python -m pip install pylint
           
       - name: pylint ${{ matrix.python-version }}
-        run: pylint tests/tests.py
+        run: pylint main/tests.py
+        - name: pylint ${{ matrix.python-version }}
+        run: pylint main/project.py
       - name: unit ${{ matrix.python-version }}
-        run: pytest tests/tests.py
+        run: pytest main/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
-          pytest --cov=./ --cov-report= tests/tests.py
+          pytest --cov=./ --cov-report= main/tests.py
           coverage report --fail-under=70
       
         
