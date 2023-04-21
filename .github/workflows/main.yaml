@@ -26,6 +26,13 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pytest-cov
           python -m pip install pylint
+          pip install pandas
+          pip install matplotlib
+          pip install yfinance
+          pip install mplfinance
+          pip install sklearn
+          pip install requests
+          pip install matplotlib.pyplot
 
       - name: pylint ${{ matrix.python-version }}
         run: pylint main/tests.py
