@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pytest-cov
           python -m pip install pylint
-          
+
       - name: pylint ${{ matrix.python-version }}
         run: pylint main/tests.py
         - name: pylint ${{ matrix.python-version }}
