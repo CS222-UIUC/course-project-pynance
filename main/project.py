@@ -3,8 +3,8 @@
 import os
 from pathlib import Path
 import datetime
-import yfinance as yf
 import json
+import yfinance as yf
 import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
