@@ -204,11 +204,13 @@ if __name__ == "__main__":
             # interval = str(input('Enter an interval (1d, 1m, 1y): '))
 
             # # stocks = ['MSFT', 'BTC-USD']
-            # stocks = input('Enter stock name abbreviation separated by commas (AAPL, GOOG, AMZN): ')
+            # stocks = input('Enter stock name
+            # abbreviation separated by commas (AAPL, GOOG, AMZN): ')
             # stocks = stocks.replace(' ', '').split(',')
 
             # plot_stocks_df(stocks, period, interval)
-            # keyput = str(input("Would You like data on another stock?[press y if yes, otherwise no]"))
+            # keyput = str(input("Would You like data
+            # on another stock?[press y if yes, otherwise no]"))
             # if keyput != 'y':
             #     break
 
