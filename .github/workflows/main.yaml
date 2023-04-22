@@ -42,5 +42,5 @@ jobs:
         run: pytest project/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
-          pytest --cov=./ --cov-report=term project/tests.py
+          pytest --cov=./ --cov-report= project/tests.py project/project.py
           coverage report --fail-under=90
