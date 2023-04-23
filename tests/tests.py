@@ -10,12 +10,12 @@ import os
 
 #   FUNCTIONS
 
-def exists_data(stock_name):
+def exists_data(stock_name, custom_period, custom_interval):
     """Checks if the stock data for a particular company exists"""
     stocks = os.listdir('data/')
     #print(stocks)
     for i in stocks:
-        if i == str(stock_name) + ".csv":
+        if i == str(stock_name) + "_" + custom_period + "_" + custom_interval + ".csv":
             return True
     return False
 
@@ -35,11 +35,14 @@ def test_exists_data():
     """Tests the exists_data function"""
     print("Running test_exists()...")
     print(".....\n"*3)
-    stock_names = ["GOOG", "AAPL","UAL","VWAGY","TSLA","AMZN"]
-    expected_results = [True, False, False, False, True, True]
+    stock_names = ["GOOG", "AAPL","MSFT","VWAGY","TSLA","AMZN"]
+    expected_results = [True, False, True, False, True, False]
     actual_results = []
     for i in stock_names:
-        result = exists_data(i)
+        if i == "MSFT":
+            actual_results.append(exists_data(i, "10y", "1d"))
+            continue
+        result = exists_data(i, "5y", "1d")
         actual_results.append(result)
     for i in range(6):
         assert actual_results[i] == expected_results[i]
@@ -50,7 +53,7 @@ def test_exists_info():
     print("Running test_exists_info()...")
     print(".....\n"*3)
     stock_names = ["GOOG", "AAPL","UAL","VWAGY","TSLA","AMZN"]
-    expected_results = [True, True, False, True, False, False]
+    expected_results = [True, True, False, True, False, True]
     actual_results = []
     for i in stock_names:
         result = exists_info(i)

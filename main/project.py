@@ -2,36 +2,43 @@
 # we should probably write a package setup script instead of rerunning imports each and every time
 import os
 from pathlib import Path
+import datetime
 import yfinance as yf
 import pandas as pd
 import mplfinance as mpf
 import matplotlib.pyplot as plt
 import requests
-import datetime
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from tensorflow import keras
+import tensorflow as tf
 # from bs4 import BeautifulSoup
 
-def exists_data(stock_name):
+def exists_data(stock_name, custom_period, custom_interval):
     """Checks if the stock data for a particular company exists"""
 
     stocks = os.listdir('data/')
     #print(stocks)
     for i in stocks:
-        if i == str(stock_name) + ".csv":
+        if i == str(stock_name) + '_' + custom_period + '_' + custom_interval + ".csv":
             return True
     return False
 
-def get_company_data(stock_name):
+def get_company_data(stock_name, custom_period, custom_interval):
     """Fetches Company Stock Data and Stores it as CSV file"""
 
-    if exists_data(stock_name):
+    if exists_data(stock_name, custom_period, custom_interval):
         #read File
-        stock_data = pd.read_csv('data/' + str(stock_name) + '.csv')
+        stock_data = pd.read_csv('data/' + str(stock_name) + '_' +
+                                custom_period + '_' + custom_interval + '.csv')
         return stock_data
     else:
-        stock_data = yf.download(tickers=stock_name, period='1d', interval='1m')
+        stock_data = yf.download(tickers=stock_name, period=custom_period, interval=custom_interval)
         #print(stock_data)
         #Write it into a file
-        filepath = Path('data/' + str(stock_name) + '.csv')
+        filepath = Path('data/' + str(stock_name) + '_' +
+                        custom_period + '_' + custom_interval + '.csv')
         filepath.parent.mkdir(parents=True, exist_ok=True)
         stock_data.to_csv(filepath)
         return stock_data
@@ -39,7 +46,7 @@ def get_company_data(stock_name):
 def exists_info(stock_name):
     """Checks if the stock info for a particular company exists"""
 
-    stocks = os.listdir('../info/')
+    stocks = os.listdir('info/')
     for i in stocks:
         if i == str(stock_name) + ".txt":
             return True
@@ -51,7 +58,7 @@ def get_company_summary(stock_name):
 
     if exists_info(stock_name):
         #read info
-        file = open('../info/' + str(stock_name) + '.txt', "r", encoding="utf-8")
+        file = open('info/' + str(stock_name) + '.txt', "r", encoding="utf-8")
         stock_information = file.read()
         file.close()
         return stock_information
@@ -84,7 +91,7 @@ def get_company_summary(stock_name):
         # stock_information = stock.info
 
         #write data
-        file = open('../info/' + str(stock_name) + '.txt', "w", encoding="utf-8")
+        file = open('info/' + str(stock_name) + '.txt', "w", encoding="utf-8")
         file.write(stock_information)
         file.close()
         return stock_information
@@ -92,11 +99,12 @@ def get_company_summary(stock_name):
 ### Visualization Component ###
 
 def plot_stocks_df(stocks, period, interval):
+    '''Visualization Component'''
     for stock in stocks:
         plt.figure()
-        temp = yf.Ticker(stock)
+        # temp = yf.Ticker(stock)
         hist = yf.download(tickers = stock, period = period, interval = interval)
-        mpf.plot(hist, 
+        mpf.plot(hist,
                     type = 'candle',
                     volume = True,
                     mav = (20,5),
@@ -105,30 +113,220 @@ def plot_stocks_df(stocks, period, interval):
                     figratio= (10,5))
         globals()[f"plot_{stock}_{interval}"] = plt.gcf()
 
+# Run Linear Regression
+def run_linear_regression(stock_data):
+    """Builds and tests linear regression model"""
+    x_1 = stock_data[['Open', 'High','Low', 'Volume']]
+    y_1 = stock_data['Close']
+    train_x, test_x, train_y, test_y = train_test_split(x_1, y_1, test_size=0.15 ,
+                                                        shuffle=False,random_state = 0)
+    # print(train_x.shape)
+    # print(test_x.shape)
+    # print(train_y.shape)
+    # print(test_y.shape)
+    regression = LinearRegression()
+    regression.fit(train_x, train_y)
+    return (regression, test_x, test_y)
+
+
+def get_stats(model, test_x, test_y):
+    """Provides Statistics of the Linear Model"""
+    print("regression coefficient",model.coef_)
+    print("regression intercept",model.intercept_)
+    # the coefficient of determination R²
+    regression_confidence = model.score(test_x, test_y)
+    print("linear regression confidence: ", regression_confidence)
+
+    predicted=model.predict(test_x)
+    dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
+    print(dfr.head(10))
+
+    print('Mean Absolute Error (MAE):', metrics.mean_absolute_error(test_y, predicted))
+
+    x_2 = dfr.Actual_Price.mean()
+    y_2 = dfr.Predicted_Price.mean()
+    accuracy_1 = x_2/y_2*100
+    print("The accuracy of the model is " , accuracy_1)
+
+    # Visualization
+
+def get_plots(model, test_x, test_y):
+    """Visualizes the Model"""
+    predicted=model.predict(test_x)
+    dfr=pd.DataFrame({'Actual_Price':test_y, 'Predicted_Price':predicted})
+    plt.scatter(dfr.Actual_Price, dfr.Predicted_Price,  color='Darkblue')
+    plt.xlabel("Actual Price")
+    plt.ylabel("Predicted Price")
+    plt.show()
+
+    plt.plot(dfr.Actual_Price, color='black')
+    plt.plot(dfr.Predicted_Price, color='lightblue')
+    plt.title("Nio prediction chart")
+    plt.show()
+
+def run_lstm(stock_data):
+    df = pd.read_csv(stock_data)
+    feature_keys = [
+        "Open",
+        "High",
+        "Low",
+        "Volume",
+    ]
+    split_fraction = 0.715
+    print(df.shape[0])
+    train_split = int(split_fraction * int(df.shape[0]))
+    print(train_split)
+    step = 6
+
+    past = 20
+    future = 5
+    learning_rate = 0.001
+    batch_size = 256
+    epochs = 10
+
+    date_time_key = "Date"
+
+    features = df[feature_keys]
+    features.index = df[date_time_key]
+    features.head()
+
+    features = lstm_helper_normalize(features.values, train_split)
+    features = pd.DataFrame(features)
+    features.head()
+
+    train_data = features.loc[0 : train_split - 1]
+    val_data = features.loc[train_split:]
+
+    start = past + future
+    end = start + train_split
+
+    x_train = train_data[[i for i in range(3)]].values
+    y_train = features.iloc[start:end][[1]]
+
+
+    sequence_length = int(past / step)
+
+    dataset_train = keras.preprocessing.timeseries_dataset_from_array(
+    x_train,
+    y_train,
+    sequence_length=sequence_length,
+    sampling_rate=step,
+    batch_size=batch_size,)
+
+    x_end = len(val_data) - past - future
+
+    label_start = train_split + past + future
+
+    x_val = val_data.iloc[:x_end][[i for i in range(3)]].values
+    y_val = features.iloc[label_start:][[1]]
+
+    dataset_val = keras.preprocessing.timeseries_dataset_from_array(
+        x_val,
+        y_val,
+        sequence_length=sequence_length,
+        sampling_rate=step,
+        batch_size=batch_size,
+    )
+
+    inputs = keras.layers.Input(shape=(inputs.shape[1], inputs.shape[2]))
+    lstm_out = keras.layers.LSTM(32)(inputs)
+    outputs = keras.layers.Dense(1)(lstm_out)
+
+    model = keras.Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=learning_rate), loss="mse")
+    model.summary()
+
+    history = model.fit(
+    dataset_train,
+    epochs=epochs,
+    validation_data=dataset_val,)       
+
+    for x, y in dataset_val.take(5):
+        lstm_helper_show_plot(
+            [x[0][:, 1].numpy(), y[0].numpy(), model.predict(x)[0]],
+            12,
+            "Single Step Prediction",
+        )
+
+    return; 
+
+
+def lstm_helper_normalize(data, train_split):
+    data_mean = data[:train_split].mean(axis=0)
+    data_std = data[:train_split].std(axis=0)
+    return (data - data_mean) / data_std
+
+def lstm_helper_show_plot(plot_data, delta, title):
+    labels = ["History", "True Future", "Model Prediction"]
+    marker = [".-", "rx", "go"]
+    time_steps = list(range(-(plot_data[0].shape[0]), 0))
+    if delta:
+        future = delta
+    else:
+        future = 0
+
+    plt.title(title)
+    for i, val in enumerate(plot_data):
+        if i:
+            plt.plot(future, plot_data[i], marker[i], markersize=10, label=labels[i])
+        else:
+            plt.plot(time_steps, plot_data[i].flatten(), marker[i], label=labels[i])
+    plt.legend()
+    plt.xlim([time_steps[0], (future + 5) * 2])
+    plt.xlabel("Time-Step")
+    plt.show()
+    return
+
 def main():
     """Main Function"""
-    cont= True
-
-    while cont:
+    print("How many stocks do you want data on?")
+    print("Enter a non-negative integer here: ")
+    n_1 = int(input())
+    i_1 = 0
+    while i_1 < n_1:
         print("------Which stock would you like data on?------")
         stock_name = str(input("Please enter it's symbol: "))
-        data = get_company_summary(stock_name)
-        print(data)
-        keyput = str(input("Would You like data on another stock?[press y if yes, otherwise no]"))
-        if (keyput != 'y'):
-            break
+        period = str(input("""Please enter the period over which you want the data
+                            (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        interval = str(input("""Please enter the interval between which you want the data
+        (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        # data = get_company_summary(stock_name)
+        # print(data)
+        stock_data = get_company_data(stock_name, period, interval)
+        model, test_x, test_y = run_linear_regression(stock_data)
+        want_stats = input("Would you like the statistics of the model? (y/n)")
+        if want_stats == 'y':
+            get_stats(model, test_x, test_y)
+        want_plots = input("Would you like the plots of the data? (y/n)")
+        if want_plots == 'y':
+            get_plots(model, test_x, test_y)
+        predict_open = int(input("Enter the opening price of the stock: "))
+        predict_high = int(input("Enter the high of the stock: "))
+        predict_low = int(input("Enter the low of the stock: "))
+        predict_vol = int(input("Enter the volume the stock: "))
+        predict_dict = {"Open": [predict_open], "High": [predict_high],
+                        "Low": [predict_low], "Volume": [predict_vol]}
+        predict_df = pd.DataFrame(predict_dict)
+        print("The predicted closing price of", stock_name, "is:",
+            model.predict(predict_df)[0])
+        i_1 += 1
+        print("*************")
+        print("Thank you for using this app")
+        print("*************")
+        # ### Visualization Component ###
 
-    ### Visualization Component ###
+        # # period = '1d'
+        # period = str(input('Enter a period (1d, 1m, 1y): '))
+        # # interval = '5m'
+        # interval = str(input('Enter an interval (1d, 1m, 1y): '))
 
-    # period = '1d'
-    period = str(input('Enter a period (1d, 1m, 1y): '))
-    # interval = '5m'
-    interval = str(input('Enter an interval (1d, 1m, 1y): '))
+        # # stocks = ['MSFT', 'BTC-USD']
+        # stocks = input('Enter stock name abbreviation separated by commas (AAPL, GOOG, AMZN): ')
+        # stocks = stocks.replace(' ', '').split(',')
 
-    # stocks = ['MSFT', 'BTC-USD']
-    stocks = input('Enter stock name abbreviation separated by commas (AAPL, GOOG, AMZN): ')
-    stocks = stocks.replace(' ', '').split(',')
-
-    plot_stocks_df(stocks, period, interval)
+        # plot_stocks_df(stocks, period, interval)
+        # keyput = str(input("Would You like data on another stock?[press y if yes, otherwise no]"))
+        # if keyput != 'y':
+        #     break
 
 main()
