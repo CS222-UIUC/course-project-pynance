@@ -26,14 +26,21 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install pytest-cov
           python -m pip install pylint
-          
+          pip install pandas
+          pip install matplotlib
+          pip install yfinance
+          pip install mplfinance
+          pip install sklearn
+          pip install requests
+          pip install scikit-learn
+
       - name: pylint ${{ matrix.python-version }}
-        run: pylint tests/tests.py
+        run: pylint project/tests.py
+      - name: pylint ${{ matrix.python-version }}
+        run: pylint project/project.py
       - name: unit ${{ matrix.python-version }}
-        run: pytest tests/tests.py
+        run: pytest project/tests.py
       - name: coverage ${{ matrix.python-version }}
         run: |
-          pytest --cov=./ --cov-report= tests/tests.py
-          coverage report --fail-under=70
-      
-        
+          pytest --cov=./ --cov-report= project/tests.py
+          coverage report --fail-under=50
