@@ -25,6 +25,7 @@ There exist few financial visualization applications and services that implement
 3) Visualization displays trends and graphs for stock analysis (uses Matplotlib.pyplot)
 4) Prediction runs linear regression to get predicted values (uses sklearn, pandas, finance, mplfinance)
 
+![alt text](./technical_architecture.png)
 
 # Installation Instructions
 
