@@ -1,6 +1,6 @@
 ﻿# course-project-pynance
 
-a) Introduction
+**Introduction**
 
 Project Name - Pynance 
 
@@ -18,11 +18,11 @@ Alternatives and Precedents
 
 There exist few financial visualization applications and services that implement statistical frameworks that allow for prediction on previously seen data. Our take on the project was to build and test such models so as to provide this missing prediction component, and to build a refined visualization and an interface on the side so as to provide a tangible evidence of its accuracy.
 
-b) Technical Architecture
+**Technical Architecture**
 
 
-c) Installation Instructions
+**Installation Instructions**
 
 
-d) Work Distribution:
+**Work Distribution**
   
