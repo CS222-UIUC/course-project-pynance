@@ -1,6 +1,6 @@
 ﻿# course-project-pynance
 
-#Introduction
+# Introduction
 
 Project Name - Pynance 
 
@@ -18,7 +18,7 @@ Alternatives and Precedents
 
 There exist few financial visualization applications and services that implement statistical frameworks that allow for prediction on previously seen data. Our take on the project was to build and test such models so as to provide this missing prediction component, and to build a refined visualization and an interface on the side so as to provide a tangible evidence of its accuracy.
 
-#Technical Architecture
+# Technical Architecture
 
 1) Frontend (Website, GUI, Terminal): Initially we used the terminal to display results. For our stretch goals, we created a basic website that sends requests to the backends and displays the result. (uses dearpygui)
 2) yfinance API: interacts with the visualization and prediction component because it provides the data.
@@ -26,9 +26,9 @@ There exist few financial visualization applications and services that implement
 4) Prediction runs linear regression to get predicted values (uses sklearn, pandas, finance, mplfinance)
 
 
-#Installation Instructions
+# Installation Instructions
 
-**Run the following commands for prediction and visualization functionality:
+** Run the following commands for prediction and visualization functionality:
 
 1) pip install yfinance
 2) pip install pandas
@@ -36,17 +36,17 @@ There exist few financial visualization applications and services that implement
 4) pip install scikit
 5) pip install requests
 
-**Run the following command for GUI:
+** Run the following command for GUI:
 
 pip install dearpygui
 
-**Run the following for setting up the website:
+** Run the following for setting up the website:
 
 1) Install NodeJS
 2) npm install
 3) npm i
 
-#Work Distribution
+# Work Distribution
   
 1) Aryan Malhotra: Frontend (Website and Terminal), Linear Regression Prediction and Analysis, Yfinance and Finnhub APIs
 2) Jose Ines Martinez: Linear Regression Analysis and Visualization, Yfinance APIs
