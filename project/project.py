@@ -162,11 +162,9 @@ def get_plots(model, test_x, test_y):
     plt.title("Nio prediction chart")
     plt.show()
 
-def get_predicted_price(stock_name, predict_open,
+def get_predicted_price(stock_name, period, interval, predict_open,
                         predict_high, predict_low, predict_vol):
     """Returns the predicted price"""
-    period = "5y"
-    interval = "1d"
     stock_data = get_company_data(stock_name, period, interval)
     model, test_x, test_y = run_linear_regression(stock_data)
     predict_df = pd.DataFrame({"Open": [int(predict_open)], "High": [int(predict_high)],
