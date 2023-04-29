@@ -28,7 +28,7 @@ There exist few financial visualization applications and services that implement
 
 # Installation Instructions
 
-** Run the following commands for prediction and visualization functionality:
+** Run the following commands for prediction and visualization functionality: **
 
 1) pip install yfinance
 2) pip install pandas
@@ -36,11 +36,11 @@ There exist few financial visualization applications and services that implement
 4) pip install scikit
 5) pip install requests
 
-** Run the following command for GUI:
+** Run the following command for GUI: **
 
 pip install dearpygui
 
-** Run the following for setting up the website:
+** Run the following for setting up the website: **
 
 1) Install NodeJS
 2) npm install
