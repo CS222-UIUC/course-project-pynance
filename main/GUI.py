@@ -4,7 +4,7 @@ import project
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import mplfinance as mpf
 import yfinance as yf
-import datetime
+import project
 import matplotlib.pyplot as plt
 
 dpg.create_context()
@@ -25,9 +25,7 @@ def show_vis(sender, data):
     inputvalue = dpg.get_value("ticker3")
     period = dpg.get_value("period3")
     interval = dpg.get_value("interval3")
-    hist = project.get_company_data(inputvalue,period,interval)
-
-    
+    hist = project.get_company_data(inputvalue,period,interval)    
     date =  [float(10 + i*(600/len(hist))) for i in range(len(hist))]
     opens = hist["Open"].to_list()
     open = [float(x) for x in opens]
@@ -37,7 +35,6 @@ def show_vis(sender, data):
     low = [float(x) for x in lows]
     highs = hist["High"].to_list()
     high = [float(x) for x in highs]
-
     dpg.delete_item("Primary Window")
     with dpg.window(tag = "Visualization"):
         dpg.set_primary_window("Visualization", True)
@@ -58,6 +55,22 @@ def show_summ(sender, data):
         summary = project.get_company_summary(inputvalue)
         dpg.add_text(summary)
         dpg.add_button(tag = "return2",label = "Return", callback = returnmenu)
+
+
+def show_pred(sender, data):
+    inputvalue = dpg.get_value("ticker4")
+    period = dpg.get_value("period4")
+    interval = dpg.get_value("interval4")
+    open = dpg.get_value("open")
+    high = dpg.get_value("high")
+    low = dpg.get_value("low")
+    vol = dpg.get_value("vol")
+    dpg.delete_item("Primary Window")
+    with dpg.window(tag = "pred"):
+        dpg.set_primary_window("pred", True)
+        prediction = project.get_predicted_price(inputvalue, period, interval, open, high, low, vol)
+        dpg.add_text(prediction)
+        dpg.add_button(tag = "return4",label = "Return", callback = returnmenu)
 
 
 def mainmenu():
@@ -84,7 +97,17 @@ def mainmenu():
                 dpg.add_input_text(tag = "interval3")
                 dpg.add_button(tag = "submit3", label = "Submit", callback = show_vis)
             with dpg.tab(label="Prediction"):
-                dpg.add_text("Enter the Ticker, Period, and Interval for the stock below")
+                dpg.add_text("Enter the Ticker, Period, Interval, open, high, low and vol for the stock below")
+                dpg.add_input_text(tag = "ticker4")
+                dpg.add_input_text(tag = "period4")
+                dpg.add_input_text(tag = "interval4")
+                dpg.add_input_text(tag = "open")
+                dpg.add_input_text(tag = "high")
+                dpg.add_input_text(tag = "low")
+                dpg.add_input_text(tag = "vol")
+                dpg.add_button(tag = "submit4", label = "Submit", callback = show_pred)
+                
+
 
 
 
@@ -117,6 +140,15 @@ def returnmenu(sender):
                 dpg.add_button(tag = "submit3", label = "Submit", callback = show_vis)
             with dpg.tab(label="Prediction"):
                 dpg.add_text("Enter the Ticker, Period, and Interval for the stock below")
+                dpg.add_text("Enter the Ticker, Period, Interval, open, high, low and vol for the stock below")
+                dpg.add_input_text(tag = "ticker4")
+                dpg.add_input_text(tag = "period4")
+                dpg.add_input_text(tag = "interval4")
+                dpg.add_input_text(tag = "open")
+                dpg.add_input_text(tag = "high")
+                dpg.add_input_text(tag = "low")
+                dpg.add_input_text(tag = "vol")
+                dpg.add_button(tag = "submit4", label = "Submit", callback = show_pred)
 
 
 mainmenu()
