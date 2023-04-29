@@ -162,42 +162,56 @@ if __name__ == "__main__":
         plt.title("Nio prediction chart")
         plt.show()
 
+def get_predicted_price(stock_name, predict_open,
+                        predict_high, predict_low, predict_vol):
+    """Returns the predicted price"""
+    period = "5y"
+    interval = "1d"
+    stock_data = get_company_data(stock_name, period, interval)
+    model, test_x, test_y = run_linear_regression(stock_data)
+    predict_df = pd.DataFrame({"Open": [int(predict_open)], "High": [int(predict_high)],
+                            "Low": [int(predict_low)], "Volume": [int(predict_vol)]})
+    test_x += []
+    test_y += []
+    return model.predict(predict_df)[0]
+
+
 if __name__ == "__main__":
     def main():
         """Main Function"""
         print("How many stocks do you want data on?")
         print("Enter a non-negative integer here: ")
-        n_1 = int(input())
-        while n_1 > 0:
-            print("------Which stock would you like data on?------")
-            stock_name = str(input("Please enter it's symbol: "))
-            period = str(input("""Please enter the period over which you want the data
-                                (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
-            interval = str(input("""Please enter the interval between which you want the data
-            (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        # n_1 = int(input())
+        # while n_1 > 0:
+        #     print("------Which stock would you like data on?------")
+        #     stock_name = str(input("Please enter it's symbol: "))
+        #     period = str(input("""Please enter the period over which you want the data
+        #                         (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
+        #     interval = str(input("""Please enter the interval between which you want the data
+            # (1d -> 1 day; 1m -> 1 month; 1y -> 1 year): """))
             # data = get_company_summary(stock_name)
             # print(data)
-            stock_data = get_company_data(stock_name, period, interval)
-            model, test_x, test_y = run_linear_regression(stock_data)
-            want_stats = input("Would you like the statistics of the model? (y/n)")
-            if want_stats == 'y':
-                get_stats(model, test_x, test_y)
-            want_plots = input("Would you like the plots of the data? (y/n)")
-            if want_plots == 'y':
-                get_plots(model, test_x, test_y)
-            predict_open = int(input("Enter the opening price of the stock: "))
-            predict_high = int(input("Enter the high of the stock: "))
-            predict_low = int(input("Enter the low of the stock: "))
-            predict_vol = int(input("Enter the volume the stock: "))
-            predict_df = pd.DataFrame({"Open": [predict_open], "High": [predict_high],
-                            "Low": [predict_low], "Volume": [predict_vol]})
-            print("The predicted closing price of", stock_name, "is:",
-                model.predict(predict_df)[0])
-            print("*************")
-            print("Thank you for using this app")
-            print("*************")
+            # stock_data = get_company_data(stock_name, period, interval)
+            # model, test_x, test_y = run_linear_regression(stock_data)
+            # want_stats = input("Would you like the statistics of the model? (y/n)")
+            # if want_stats == 'y':
+            #     get_stats(model, test_x, test_y)
+            # want_plots = input("Would you like the plots of the data? (y/n)")
+            # if want_plots == 'y':
+            #     get_plots(model, test_x, test_y)
+            # predict_open = int(input("Enter the opening price of the stock: "))
+            # predict_high = int(input("Enter the high of the stock: "))
+            # predict_low = int(input("Enter the low of the stock: "))
+            # predict_vol = int(input("Enter the volume the stock: "))
+            # predict_df = pd.DataFrame({"Open": [predict_open], "High": [predict_high],
+            #                 "Low": [predict_low], "Volume": [predict_vol]})
+            # print("The predicted closing price of", stock_name, "is:",
+            #     model.predict(predict_df)[0])
+            # print("*************")
+            # print("Thank you for using this app")
+            # print("*************")
             # ### Visualization Component ###
-            n_1 -= 1
+            # n_1 -= 1
             # # period = '1d'
             # period = str(input('Enter a period (1d, 1m, 1y): '))
             # # interval = '5m'
